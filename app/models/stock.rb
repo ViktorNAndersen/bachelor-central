@@ -1,3 +1,6 @@
+#     t.datetime "created_at", null: false
+#     t.datetime "updated_at", null: false
+
 class Stock < ApplicationRecord
   has_many :quantities
   has_many :products, through: :quantities

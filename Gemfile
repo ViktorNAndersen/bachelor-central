@@ -29,6 +29,8 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
+gem "rack-cors" # for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
+gem "ransack" # for advanced search capabilities
 
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
