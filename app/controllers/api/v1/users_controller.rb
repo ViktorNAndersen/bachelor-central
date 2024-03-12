@@ -1,9 +1,9 @@
-class API::V1::UsersController < ApplicationController
+class Api::V1::UsersController < ApplicationController
   before_action :set_user, only: [:update, :destroy]
 
   def index
     @q = User.ransack(params[:q])
-    @orders = @q.result
+    @users = @q.result
     render json: @users
   end
 

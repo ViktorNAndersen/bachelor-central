@@ -1,4 +1,4 @@
-class API::V1::LogsController < ApplicationController
+class Api::V1::LogsController < ApplicationController
   def index
     @q = Log.ransack(params[:q])
     @orders = @q.result

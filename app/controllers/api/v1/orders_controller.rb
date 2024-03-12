@@ -1,6 +1,4 @@
-class API::V1::OrdersController < ApplicationController
-  
-  
+class Api::V1::OrdersController < ApplicationController
   def index
     @q = Order.ransack(params[:q])
     @orders = @q.result
