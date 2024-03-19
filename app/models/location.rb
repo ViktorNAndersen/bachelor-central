@@ -8,5 +8,7 @@
 class Location < ApplicationRecord
   has_many :logs
   has_many :users
+  belongs_to :location, optional: true, foreign_key: 'supplier_id'
+  has_many :locations
   belongs_to :stock
 end

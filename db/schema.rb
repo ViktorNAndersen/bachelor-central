@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_04_113511) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_19_084420) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,6 +21,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_04_113511) do
     t.bigint "stock_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "supplier_id"
     t.index ["stock_id"], name: "index_locations_on_stock_id"
   end
 
@@ -66,7 +67,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_04_113511) do
   create_table "quantities", force: :cascade do |t|
     t.bigint "stock_id", null: false
     t.bigint "product_id", null: false
-    t.integer "quantity"
+    t.integer "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["product_id"], name: "index_quantities_on_product_id"
