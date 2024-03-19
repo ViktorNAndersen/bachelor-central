@@ -10,8 +10,92 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 0) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_04_113511) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "locations", force: :cascade do |t|
+    t.string "type"
+    t.string "name"
+    t.string "address"
+    t.bigint "stock_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["stock_id"], name: "index_locations_on_stock_id"
+  end
+
+  create_table "logs", force: :cascade do |t|
+    t.string "type"
+    t.string "title"
+    t.string "description"
+    t.bigint "location_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["location_id"], name: "index_logs_on_location_id"
+    t.index ["user_id"], name: "index_logs_on_user_id"
+  end
+
+  create_table "order_items", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.bigint "product_id", null: false
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["product_id"], name: "index_order_items_on_product_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "status"
+    t.decimal "total_price", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "ordered_by_id", null: false
+    t.index ["ordered_by_id"], name: "index_orders_on_ordered_by_id"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.decimal "price", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "quantities", force: :cascade do |t|
+    t.bigint "stock_id", null: false
+    t.bigint "product_id", null: false
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_quantities_on_product_id"
+    t.index ["stock_id"], name: "index_quantities_on_stock_id"
+  end
+
+  create_table "stocks", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "type"
+    t.string "email"
+    t.string "password"
+    t.integer "role", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "location_id"
+    t.index ["location_id"], name: "index_users_on_location_id"
+  end
+
+  add_foreign_key "locations", "stocks"
+  add_foreign_key "logs", "locations"
+  add_foreign_key "logs", "users"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "products"
+  add_foreign_key "orders", "users", column: "ordered_by_id"
+  add_foreign_key "quantities", "products"
+  add_foreign_key "quantities", "stocks"
+  add_foreign_key "users", "locations"
 end
