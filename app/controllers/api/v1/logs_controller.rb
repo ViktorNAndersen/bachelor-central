@@ -1,22 +1,44 @@
 class Api::V1::LogsController < ApplicationController
+  before_action :set_log, only: [:show, :update, :destroy]
   def index
     @q = Log.ransack(params[:q])
-    @orders = @q.result
-    render json: @users
+    @logs = @q.result
+    render json: @logs
+  end
+
+  def show
+    render json: @log
   end
 
   def create
-    @order = Order.new(order_params)
-    if @order.save
-      render json: @order, status: :created
+    @log = Log.new(log_params)
+    if @log.save
+      render json: @log, status: :created
     else
-      render json: { errors: @order.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @log.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @log.update(log_params)
+      render json: @log, status: :ok
+    else
+      render json: { errors: @log.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @order = order.find(params[:id])
-    @order.destroy
+    @log.destroy
     head :no_content
   end
+
+  private
+  def set_log
+    @log = log.find(params[:id])
+  end
+
+  def log_params
+    params.require(:log).permit()
+  end
+
 end

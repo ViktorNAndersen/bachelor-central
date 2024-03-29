@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :set_user, only: [:update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy]
 
   def index
     @q = User.ransack(params[:q])
@@ -7,6 +7,10 @@ class Api::V1::UsersController < ApplicationController
     render json: @users
   end
 
+  def show
+    render json: @user
+  end
+  
   def create
     @user = Employee.new(user_params)
     if @user.save
