@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       resources :logs, only: [:index, :show, :create, :destroy]
       resources :orders
       resources :locations, only: [:index, :show]
+      resources :products, only: [:index]
     end
   end
 end
