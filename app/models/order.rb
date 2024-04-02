@@ -12,5 +12,5 @@ class Order < ApplicationRecord
 
   has_many :products, through: :order_items
 
-  enum status: { pending: 0, completed: 1, cancelled: 2 }
+  enum status: { pending: 0, in_progress: 1, cancelled: 2, completed: 3 }
 end
