@@ -8,6 +8,8 @@ class Order < ApplicationRecord
   belongs_to :ordered_by, class_name: 'User', foreign_key: 'ordered_by_id'
 
   has_many :order_items
+  accepts_nested_attributes_for :order_items
+
   has_many :products, through: :order_items
 
   enum status: { pending: 0, completed: 1, cancelled: 2 }
