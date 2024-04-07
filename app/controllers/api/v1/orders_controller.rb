@@ -26,7 +26,7 @@ class Api::V1::OrdersController < ApplicationController
       @order.update_attribute(:status, 1)
       render json: @order, status: :created
     else
-      render json: { errors: @order.errors.full_messages }, status: :unprocessable_entity
+      render text: { errors: @order.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -34,7 +34,7 @@ class Api::V1::OrdersController < ApplicationController
     if @order.update(order_params)
       render json: @order, status: :ok
     else
-      render json: { errors: @order.errors.full_messages }, status: :unprocessable_entity
+      render text: { errors: @order.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
