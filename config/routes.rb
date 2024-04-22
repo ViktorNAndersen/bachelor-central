@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       resources :orders
       resources :locations, only: [:index, :show]
       resources :products, only: [:index]
+      resources :ping, only: [:index]
     end
   end
 end
