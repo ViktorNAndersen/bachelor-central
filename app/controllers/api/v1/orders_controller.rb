@@ -41,6 +41,8 @@ class Api::V1::OrdersController < ApplicationController
 
   def destroy
     @order.destroy
+    update_supplier_stock(action: :destroy)
+    update_unit_stock(action: :destroy)
     head :no_content
   end
 
@@ -53,23 +55,32 @@ class Api::V1::OrdersController < ApplicationController
     params.require(:order).permit(:ordered_by_id, :status, :total_price, order_items_attributes: [:product_id, :quantity])
   end
 
-  def update_supplier_stock
+  def update_supplier_stock(action: :create)
     stock = User.find(@order.ordered_by_id)&.unit&.supplier&.stock
 
     @order.order_items.each do |order_item|
       product = Product.find(order_item.product_id)
       quantity = stock.quantities.find_by(product_id: product.id)
-      quantity.update_attribute(:amount, quantity.amount - order_item.quantity)
+      unless action == :destroy
+        quantity.update_attribute(:amount, quantity.amount - order_item.quantity)
+      else
+        quantity.update_attribute(:amount, quantity.amount + order_item.quantity)
+      end
     end
   end
 
-  def update_unit_stock
+  def update_unit_stock(action: :update)
     stock = User.find(@order.ordered_by_id)&.unit&.stock
 
     @order.order_items.each do |order_item|
       product = Product.find(order_item.product_id)
       quantity = stock.quantities.find_by(product_id: product.id)
-      quantity.update_attribute(:amount, quantity.amount + order_item.quantity)
+
+      unless action == :destroy
+        quantity.update_attribute(:amount, quantity.amount + order_item.quantity)
+      else
+        quantity.update_attribute(:amount, quantity.amount - order_item.quantity)
+      end
     end
   end
 end
